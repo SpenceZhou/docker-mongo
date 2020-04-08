@@ -19,7 +19,9 @@
 
 复制集rs的情况： primary + secondary + arbiter  (主+从+选举节点：参照以下图片)
 
-https://docs.mongodb.com/manual/_images/replica-set-primary-with-secondary-and-arbiter.bakedsvg.svg
+![avatar](https://docs.mongodb.com/manual/_images/replica-set-primary-with-secondary-and-arbiter.bakedsvg.svg)
+
+
 
 # 容量计算
 集群中包含 9 个节点，其中6个数据节点、3个选举节点
