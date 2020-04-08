@@ -1,6 +1,6 @@
 # mongodb 复制集的配置
 
-## 1.生成keyfile 用于复制集内部的权限控制
+## 1. 生成keyfile 用于复制集内部的权限控制
 ```
 openssl rand -base64 741 > mongodb-keyfile
 
