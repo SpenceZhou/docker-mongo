@@ -1,0 +1,103 @@
+version: '2'
+services:
+  configsrv:
+    image: mongo:4.2
+    command: mongod --keyFile /opt/mongodb-keyfile --oplogSize 1024 --replSet configrs --port 27017 --configsvr
+    volumes:
+      - /home/maicang/docker/mongo/configsrv_db:/data/configdb
+      - /home/maicang/docker/mongo/mongodb-keyfile:/opt/mongodb-keyfile
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "27018:27017"
+    restart:
+      always
+    container_name:
+      mongo-configsrv
+    ulimits:
+      nofile:
+        soft: 300000
+        hard: 300000
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mc-MG-2020-PWD
+    mem_limit: 1g
+  rs1_node:
+    image: mongo:4.2
+    command: mongod --keyFile /opt/mongodb-keyfile --oplogSize 10240 --replSet rs1 --port 27017 --shardsvr
+    volumes:
+      - /home/maicang/docker/mongo/rs1_node_db:/data/db
+      - /home/maicang/docker/mongo/mongodb-keyfile:/opt/mongodb-keyfile
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "27019:27017"
+    restart:
+      always
+    container_name:
+      mongo-rs1-node
+    ulimits:
+      nofile:
+        soft: 300000
+        hard: 300000
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mc-MG-2020-PWD
+    mem_limit: 7g
+  rs2_arbiter:
+    image: mongo:4.2
+    command: mongod --keyFile /opt/mongodb-keyfile --oplogSize 10240 --replSet rs2 --port 27017 --shardsvr
+    volumes:
+      - /home/maicang/docker/mongo/rs2_arbiter_db:/data/db
+      - /home/maicang/docker/mongo/mongodb-keyfile:/opt/mongodb-keyfile
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "28019:27017"
+    restart:
+      always
+    container_name:
+      mongo-rs2-arbiter
+    ulimits:
+      nofile:
+        soft: 300000
+        hard: 300000
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=mc-MG-2020-PWD
+    mem_limit: 1g
+  rs3_node:
+      image: mongo:4.2
+      command: mongod --keyFile /opt/mongodb-keyfile --oplogSize 10240 --replSet rs3 --port 27017 --shardsvr
+      volumes:
+        - /home/maicang/docker/mongo/rs3_node_db:/data/db
+        - /home/maicang/docker/mongo/mongodb-keyfile:/opt/mongodb-keyfile
+        - /etc/localtime:/etc/localtime:ro
+      ports:
+        - "29019:27017"
+      restart:
+        always
+      container_name:
+        mongo-rs3-node
+      ulimits:
+        nofile:
+          soft: 300000
+          hard: 300000
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=root
+        - MONGO_INITDB_ROOT_PASSWORD=mc-MG-2020-PWD
+      mem_limit: 8g
+  router:
+    image: mongo:4.2
+    command: mongos --keyFile /opt/mongodb-keyfile --configdb configrs/192.168.1.230:27018,192.168.1.231:27018,192.168.1.232:27018 -bind_ip 0.0.0.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - /home/maicang/docker/mongo/mongodb-keyfile:/opt/mongodb-keyfile
+      - /etc/localtime:/etc/localtime:ro
+    restart:
+      always
+    container_name:
+      mongo-router
+    ulimits:
+      nofile:
+        soft: 300000
+        hard: 300000
+    mem_limit: 1g
