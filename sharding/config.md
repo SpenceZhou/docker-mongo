@@ -57,25 +57,21 @@ chmod 600 mongodb-keyfile
 sudo chown 999 mongodb-keyfile
 ```
 ## 3.创建文件夹
-
-## 服务器0
 ```
+## 服务器0
+
 mkdir configsrv_db
 mkdir rs1_node_db
 mkdir rs2_arbiter_db
 mkdir rs3_node_db
-```
 
 ## 服务器1
-```
 mkdir configsrv_db
 mkdir rs1_node_db
 mkdir rs2_node_db
 mkdir rs3_arbiter_db
-```
 
 ## 服务器2
-```
 mkdir configsrv_db
 mkdir rs1_arbiter_db
 mkdir rs2_node_db
@@ -86,7 +82,7 @@ mkdir rs3_node_db
 ```
 sudo docker-compose up -d
 ```
-# 5. configrs配置
+## 5. configrs配置
 ```
 sudo docker exec -it mongo-configsrv /bin/bash
 
@@ -106,7 +102,7 @@ rs.initiate(
 )
 ```
 
-# 6. rs1配置  在服务器0运行以下命令
+## 6. rs1配置  在服务器0运行以下命令
 ```
 sudo docker exec -it mongo-rs1-node /bin/bash
 
@@ -143,7 +139,7 @@ rs.reconfig(
   },{"force":true}
 )
 ```
-# 7. rs2配置    在服务器1运行以下命令
+## 8. rs2配置    在服务器1运行以下命令
 ```
 sudo docker exec -it mongo-rs2-node /bin/bash
 
@@ -160,11 +156,11 @@ rs.initiate(
     ]
   }
 )
-```
+
 ## 添加选举节点 (如果不是主节点，请在主节点运行)
 rs.addArb("192.168.1.230:28019")
-
-# 8. rs3配置    在服务器2运行以下命令
+```
+## 9. rs3配置    在服务器2运行以下命令
 ```
 sudo docker exec -it mongo-rs3-node /bin/bash
 
@@ -181,11 +177,12 @@ rs.initiate(
     ]
   }
 )
-```
+
 ## 添加选举节点  (如果不是主节点，请在主节点运行)
 rs.addArb("192.168.1.231:29019")
+```
 
-# 8. 配置router 增加Shard节点
+## 10. 配置router 增加Shard节点
 ```
 sudo docker exec -it mongo-router /bin/bash
 
@@ -200,7 +197,7 @@ sh.addShard("rs2/192.168.1.231:28019,192.168.1.232:28019")
 sh.addShard("rs3/192.168.1.232:29019,192.168.1.230:29019")
 ```
 
-## 9. 测试
+## 11. 测试
 ```
 sh.enableSharding("test")
 sh.shardCollection("test.user", { _id : "hashed" } )
@@ -210,7 +207,7 @@ for(i=1;i<=10000;i++){db.user.insert({"id":i,"name":"jack"+i})} #模拟往test�
 ```
 
 
-## 停止容器并销毁数据
+## 12. 停止容器并销毁数据
 ```
 sudo docker stop mongo-configsrv
 sudo docker rm mongo-configsrv
