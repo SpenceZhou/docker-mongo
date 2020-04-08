@@ -1,18 +1,21 @@
 # mongodb 复制集的配置
 
-##1.生成keyfile 用于复制集内部的权限控制
+## 1.生成keyfile 用于复制集内部的权限控制
+```
 openssl rand -base64 741 > mongodb-keyfile
 
 chmod 600 mongodb-keyfile
 
 复制 mongodb-keyfile 文件后再分别执行chmod 操作
 chown 999 mongodb-keyfile
+```
 
-## 4. 运行docker-compose
-
+## 2. 运行docker-compose
+```
 docker-compose up -d
-
-# 5. rs配置
+```
+## 3. rs配置
+```
 docker exec -it mongo-rs1-node1-test /bin/bash
 
 mongo
@@ -38,14 +41,16 @@ rs.addArb("192.168.1.247:22219")（暂时不用）
 
 rs.add("192.168.1.247:22218")
 rs.remove("192.168.1.247:22218")
+```
 
-
-## stop
-
+## 4. stop
+```
 docker stop mongo-rs1-node1-test
 docker stop mongo-rs1-node2-test
+```
 
-
-## remove
+## 5. remove
+```
 docker rm mongo-rs1-node1-test
 docker rm mongo-rs1-node2-test
+```
