@@ -15,7 +15,7 @@
 
 
 # Mongo集群说明
-共有两个 shard  shard1(rs1)  shard2(rs1)  shard3(rs3)
+共有三个 shard  shard1(rs1)  shard2(rs1)  shard3(rs3)
 
 复制集rs的情况： primary + secondary + arbiter  (主+从+选举节点：参照以下图片)
 
