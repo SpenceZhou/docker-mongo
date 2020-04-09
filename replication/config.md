@@ -1,5 +1,12 @@
 # mongodb 复制集的配置
 
+
+复制集rs的情况： primary + secondary + arbiter  (主+从+选举节点：参照以下图片)
+
+![avatar](https://docs.mongodb.com/manual/_images/replica-set-primary-with-secondary-and-arbiter.bakedsvg.svg)
+
+
+
 ## 1. 生成keyfile 用于复制集内部的权限控制
 ```
 openssl rand -base64 741 > mongodb-keyfile
