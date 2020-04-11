@@ -54,7 +54,23 @@ rs.add("192.168.1.xx:22218")
 rs.remove("192.168.1.xx:22218")
 ```
 
-## 4. stop&remove
+## 4. 配置延时节点（常用于数据备份）
+
+参照官方文档
+
+https://docs.mongodb.com/manual/core/replica-set-delayed-member/index.html
+
+```
+rs.add({
+   "host" : <hostname:port>,
+   "priority" : 0,
+   "slaveDelay" : <seconds>,
+   "hidden" : true
+})
+
+```
+
+## 5. stop&remove
 ```
 docker stop test-rs1
 docker rm test-rs1
