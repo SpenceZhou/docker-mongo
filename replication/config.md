@@ -8,10 +8,13 @@
 
 
 ## 1. 生成keyfile 用于复制集内部的权限控制
-```
-openssl rand -base64 741 > mongodb-keyfile
 
-chmod 600 mongodb-keyfile
+参照官方文档  https://docs.mongodb.com/manual/tutorial/deploy-replica-set-with-keyfile-access-control/index.html
+```
+openssl rand -base64 756 > mongodb-keyfile
+
+chmod 400 mongodb-keyfile
+
 
 复制 mongodb-keyfile 文件后再分别执行chmod 操作
 chown 999 mongodb-keyfile
