@@ -20,24 +20,25 @@ chmod 400 mongodb-keyfile
 chown 999 mongodb-keyfile
 ```
 
-## 2. 运行docker-compose
+## 2. 运行docker
 ```
-docker-compose up -d
+docker run -d --name test-rs1 -p 20017:27017 -v `pwd`/data/db:/data/db -v `pwd`/mongodb-keyfile:/opt/mongodb-keyfile -v /etc/localtime:/etc/localtime:ro --privileged=true -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=test-324 mongo:4.2.5 --auth --keyFile /opt/mongodb-keyfile --oplogSize 10240 --replSet rs1
+
 ```
 ## 3. rs配置
 ```
-docker exec -it mongo-rs1-node1-test /bin/bash
+docker exec -it test-rs1 /bin/bash
 
 mongo
 use admin
-db.auth('root','mc-MG-2020-PWD-test')
+db.auth('root','test-324')
 
 rs.initiate(
   {
     _id : "rs1",
     members: [
-      { _id : 0, host : "192.168.1.247:22217", priority: 10},
-      { _id : 1, host : "192.168.1.247:22218", priority: 1}
+      { _id : 0, host : "192.168.1.xx:20017", priority: 10},
+      { _id : 1, host : "192.168.1.xx:22218", priority: 1}
     ]
   }
 )
@@ -45,22 +46,16 @@ rs.initiate(
 说明 priority 默认值为1， 数值越大约有可能被选举为主节点
 
 ### 添加选举节点 (如果不是主节点，请在主节点运行)(可选)
-rs.addArb("192.168.1.247:22219")（暂时不用）
+rs.addArb("192.168.1.xx:22219")（暂时不用）
 
 ### 其他增加 删除节点的命令
 
-rs.add("192.168.1.247:22218")
-rs.remove("192.168.1.247:22218")
+rs.add("192.168.1.xx:22218")
+rs.remove("192.168.1.xx:22218")
 ```
 
-## 4. stop
+## 4. stop&remove
 ```
-docker stop mongo-rs1-node1-test
-docker stop mongo-rs1-node2-test
-```
-
-## 5. remove
-```
-docker rm mongo-rs1-node1-test
-docker rm mongo-rs1-node2-test
+docker stop test-rs1
+docker rm test-rs1
 ```
