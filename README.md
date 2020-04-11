@@ -8,7 +8,7 @@
 
 
 
-## 1. 生成keyfile 用于复制集内部的权限控制
+### 1. 生成keyfile 用于复制集内部的权限控制
 
 参照官方文档  https://docs.mongodb.com/manual/tutorial/deploy-replica-set-with-keyfile-access-control/index.html
 ```
@@ -21,12 +21,12 @@ chmod 400 mongodb-keyfile
 chown 999 mongodb-keyfile
 ```
 
-## 2. 运行docker
+### 2. 运行 mongodb docker
 ```
 docker run -d --name test-rs1 -p 20017:27017 -v `pwd`/data/db:/data/db -v `pwd`/mongodb-keyfile:/opt/mongodb-keyfile -v /etc/localtime:/etc/localtime:ro --privileged=true -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=test-324 mongo:4.2.5 --auth --keyFile /opt/mongodb-keyfile --oplogSize 10240 --replSet rs1
 
 ```
-## 3. rs配置
+### 3. rs配置
 ```
 docker exec -it test-rs1 /bin/bash
 
@@ -55,7 +55,7 @@ rs.add("192.168.1.xx:22218")
 rs.remove("192.168.1.xx:22218")
 ```
 
-## 4. 配置延时节点（常用于数据备份）
+### 4. 配置延时节点（常用于数据备份）
 
 参照官方文档
 
@@ -71,10 +71,12 @@ rs.add({
 
 ```
 
-## 5. stop&remove
+### 5. stop&remove
 ```
 docker stop test-rs1
 docker rm test-rs1
 ```
 
 ## mongodb 分片配置
+
+参照 sharding/config.md 文件说明
